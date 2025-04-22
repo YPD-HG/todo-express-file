@@ -2,20 +2,27 @@
 <html lang="en">
 
 <head>
+    <!-- Meta tags for encoding and responsiveness -->
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <!-- External CSS file for styling -->
     <link rel="stylesheet" href="styles/style.css">
+
     <title>Todo List</title>
 </head>
 
 <body>
+    <!-- 🔹 Input section for adding new todos -->
     <span class="input">
-        <input id="inputField" type="text">
+        <input id="inputField" type="text" placeholder="Enter a task...">
         <button id="inputButton">Add</button> 
     </span>
-    <div id="todo-elements">
 
-    </div>
+    <!-- 🔹 Container for displaying all todo elements -->
+    <div id="todo-elements"></div>
+
+    <!-- JavaScript file (deferred to load after HTML) -->
     <script src="index.js" defer></script>
 </body>
 

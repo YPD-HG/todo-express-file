@@ -1,67 +1,68 @@
+// 🔹 Import necessary modules
 import express from 'express';
 import cors from 'cors';
 import fs from 'fs';
 
+// 🔹 App setup
 const app = express();
 const port = 3000;
 
-app.use(express.json()); // parses JSON request body
-app.use(cors());
+// 🔹 Middleware
+app.use(express.json()); // Parse incoming JSON
+app.use(cors());         // Enable Cross-Origin requests
 
+// 🔹 DELETE route: Remove a todo item
 app.delete('/', async (req, res) => {
     if (req.body !== '') {
-        const data = req.body.textData
-        console.log(data)
+        const data = req.body.textData; // Get text content to delete
+        console.log("Deleting:", data);
 
-        let file_content = fs.readFileSync('../data/todo.json', 'utf-8')
-        console.log(" ** file ** :", file_content)
-        let obj = JSON.parse(file_content)
-        console.log(obj.length)
-        for (let i = 0; i < obj.length; i++) {
-            if (obj[i].todo === data) {
-                obj.splice(i, 1)
-            }
-        }
-        console.log("*** obj *** :", obj)
-        let str = JSON.stringify(obj)
-        fs.writeFileSync('../data/todo.json', str);
-        let file = fs.readFileSync('../data/todo.json', 'utf-8')
-        console.log(" ** file_updated ** :", JSON.parse(file))
-        res.json(file)
+        // Read the existing todos
+        let file_content = fs.readFileSync('../data/todo.json', 'utf-8');
+        let obj = JSON.parse(file_content);
+
+        // Remove matching todo
+        obj = obj.filter(todo => todo.todo !== data);
+
+        // Write updated list back to file
+        let updatedStr = JSON.stringify(obj);
+        fs.writeFileSync('../data/todo.json', updatedStr);
+
+        // Send updated list to frontend
+        res.json(updatedStr);
     }
-})
+});
 
+// 🔹 POST route: Add a new todo item
 app.post('/', async (req, res) => {
     let todos = [];
 
     if (req.body !== '') {
-        todos.length = 0;
-        // *** req.body *** : { todo: 'IDC Website' }
-        let data = req.body
-        // its in js obj, we will convert that into
-        // string and put in file
+        const data = req.body; // { todo: 'Some task' }
 
-        let file_content = fs.readFileSync('../data/todo.json', 'utf-8')
-        console.log("*** file_content *** :", file_content)
+        // Read existing todos
+        let file_content = fs.readFileSync('../data/todo.json', 'utf-8');
+
         if (file_content.trim()) {
             todos = JSON.parse(file_content);
-            // Convert string to array
         }
-        todos.push(data)
 
-        let str = JSON.stringify(todos)
+        // Add new todo to array
+        todos.push(data);
 
-        // something is wrong with writeFile
-        fs.writeFile('../data/todo.json', str, (err) => {
+        // Save updated array to file
+        let updatedStr = JSON.stringify(todos);
+        fs.writeFile('../data/todo.json', updatedStr, (err) => {
             if (err) throw err;
-            console.log('Data written');
+            console.log('Todo saved.');
         });
+
+        // Send updated list to frontend
+        res.send(todos);
     }
-    res.send(todos)
-})
+});
+
+// 🔹 Start the server
 app.listen(port, () => {
     console.log(`Server running at http://localhost:${port}`);
 });
-
-
-
