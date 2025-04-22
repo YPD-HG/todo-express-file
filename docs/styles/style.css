@@ -1,0 +1,16 @@
+body {}
+
+.input{
+    display: flex;
+    justify-content: center;
+}
+
+/* #inputField {
+    margin: auto;
+    display: block;
+}
+
+#inputButton{
+    margin: auto;
+    display: block;
+} */
