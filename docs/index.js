@@ -17,7 +17,13 @@ async function postData() {
 
         let data = await res.json(); // Wait for JSON response
         todoFrontend(data); // Update frontend with new list
+        storeTodosInLocalStorage(data); // Store the updated todo list
     }
+}
+
+// Store the todo list in localStorage
+function storeTodosInLocalStorage(todos) {
+    localStorage.setItem('todos', JSON.stringify(todos)); // Convert to JSON string
 }
 
 // 🔹 Create and display a single todo element on the page
@@ -66,6 +72,9 @@ function createTodo(data) {
 
         let data = await res.json();
         let data_obj = JSON.parse(data);
+
+        // Update localStorage after deletion
+        storeTodosInLocalStorage(data_obj); // Store the updated list
         todoFrontend(data_obj); // Refresh the frontend list
     });
 }
@@ -79,7 +88,13 @@ function emptyDiv() {
 // 🔹 Display all todos from an array
 function todoFrontend(array) {
     emptyDiv(); // Clear current view
-
+    if (array.length === 0) {
+        // Try to load todos from localStorage
+        const storedTodos = localStorage.getItem('todos');
+        if (storedTodos) {
+            array = JSON.parse(storedTodos); // Parse the stored data into an array
+        }
+    }
     for (let i = 0; i < array.length; i++) {
         createTodo(array[i].todo); // Add each todo item
     }
@@ -89,4 +104,8 @@ function todoFrontend(array) {
 inputButton.addEventListener('click', async () => {
     await postData(); // Send and update UI
     document.querySelector("#inputField").value = ""; // Clear input
+});
+
+document.addEventListener('DOMContentLoaded', function() {
+    todoFrontend([]); // Pass an empty array to load from localStorage
 });
