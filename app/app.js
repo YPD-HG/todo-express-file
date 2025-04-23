@@ -33,6 +33,13 @@ app.delete('/', async (req, res) => {
     }
 });
 
+app.get('/', async (req, res) => {
+        // Read the existing todos
+        let file_content = fs.readFileSync('../data/todo.json', 'utf-8');
+        let obj = JSON.parse(file_content);
+        res.json(obj)
+});
+
 // 🔹 POST route: Add a new todo item
 app.post('/', async (req, res) => {
     let todos = [];
