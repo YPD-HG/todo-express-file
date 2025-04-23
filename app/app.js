@@ -5,7 +5,7 @@ import fs from 'fs';
 
 // 🔹 App setup
 const app = express();
-const port = 3000;
+const port = 6001;
 
 // 🔹 Middleware
 app.use(express.json()); // Parse incoming JSON
