@@ -9,7 +9,7 @@ async function postData() {
     let input = inputField.value;
 
     if (input !== '') {
-        let res = await fetch("http://localhost:3000/", {
+        let res = await fetch("http://localhost:6001/", {
             method: "POST",
             headers: {
                 "Content-Type": "application/json"
@@ -58,7 +58,7 @@ function createTodo(data) {
     let textData = textContentElement.textContent;
 
     delBtn.addEventListener('click', async () => {
-        const res = await fetch("http://localhost:3000/", {
+        const res = await fetch("http://localhost:6001/", {
             method: "DELETE",
             headers: {
                 "Content-Type": "application/json"
@@ -88,7 +88,7 @@ function todoFrontend(array) {
 }
 
 async function getData() {
-    const url = "http://localhost:3000/";
+    const url = "http://localhost:6001/";
     try {
         const response = await fetch(url);
         if (!response.ok) {
